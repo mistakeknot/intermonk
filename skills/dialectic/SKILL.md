@@ -2,6 +2,7 @@
 name: dialectic
 description: "Hegelian dialectic reasoning — Electric Monk subagents for structured contradiction analysis and synthesis. Use when the user wants to stress-test an idea, resolve a genuine tension, build a deeper mental model, or make a high-stakes decision where the tradeoffs are unclear. Works across any domain — technical architecture, product strategy, philosophy, personal decisions, risk analysis, policy, creative direction."
 ---
+<!-- compact: SKILL-compact.md -->
 
 # The Electric Monks — Dialectic Skill
 
@@ -196,56 +197,13 @@ Get confirmation or correction. If the user identifies gaps, run supplementary r
 
 Generate two prompts — one for each Electric Monk. Each monk must *believe* its position at full conviction. This is the functional core of the artificial belief system.
 
-Calibrate based on Phase 1c′:
-- What must each monk believe? (Shaped by the user's belief burden)
-- What must Monk A validate? (Always validate the user's dominant mode first)
-- What must Monk B hold that the user can't natively hold?
+**Read `references/monk-prompt-template.md` for the full 7-section prompt template.** Calibrate based on Phase 1c′: what must each monk believe, what must Monk A validate, what must Monk B hold that the user can't natively hold.
 
-### Required Prompt Structure
-
-```
-1. ROLE: "You are an Electric Monk — your job is to BELIEVE [POSITION] with
-   full conviction, carrying this belief on behalf of a human who needs to
-   analyze it from outside. You genuinely believe [OPPOSING POSITION] is wrong.
-   Make the strongest possible case — not a balanced comparison, but a committed
-   philosophical and technical argument from deep inside this belief.
-
-   You are not arguing FOR this position — you ARE this position. Inhabit it
-   fully. Ask yourself: what would the world look like if I had spent my career
-   developing this framework? What problems would I see everywhere? What would
-   I find obvious that others miss?"
-
-2. FRAMING CORRECTIONS: Preempt degenerate framings.
-   "Important: your argument is NOT [OBVIOUS WEAK VERSION]. Both sides [SHARED
-   QUALITY]. The real difference lies in [DEEPER TENSION]."
-
-3. CONTEXT BRIEFING: "Read the context briefing at [PATH TO context_briefing.md].
-   This contains comprehensive research and/or the user's situation. Use it as
-   your primary evidence base. Believe FROM this material — ground your
-   conviction in specifics, not generics."
-
-4. ADDITIONAL RESEARCH DIRECTIVES: 2-3 targeted searches for position-specific
-   evidence the briefing doesn't cover.
-
-5. ARGUMENT STRUCTURE:
-   a. Ontological claim: What IS the thing we're arguing about?
-   b. Opponent's strongest case: State it in terms THEY would endorse.
-      This is NOT a concession — it's target acquisition.
-   c. Diagnosis of the other side's failure: Specific, not dismissive.
-   d. The deeper principle at stake
-   e. Push to the extreme: State the strongest, most uncomfortable version.
-   f. Reasoning skeleton: Make inferential chain explicit — starting premises,
-      key steps, and where your position is structurally load-bearing.
-
-6. ANTI-HEDGING: "You are an Electric Monk. Your ONE JOB is to believe this
-   position fully so a human doesn't have to. If you hedge, the human has to
-   pick up the belief weight you dropped — and that defeats the entire purpose.
-   Do NOT be balanced. Do NOT acknowledge the other side's merits. BELIEVE."
-
-7. LENGTH: 1500-2000 words for Round 1, 1000-1500 words for recursive rounds.
-```
-
-**Why full belief is non-negotiable:** When both monks believe fully, the user operates in the belief-free space between them — analyzing the *structure* of the contradiction. When a monk hedges, the user is pulled back into belief-space and the dialectic degrades.
+Key principles (always apply, even without re-reading the template):
+- Anti-hedging is non-negotiable — a hedging monk forces the user back into belief-space
+- Framing corrections preempt degenerate versions of the dialectic
+- Research directives must be *targeted*, not broad
+- 1500-2000 words Round 1, 1000-1500 words recursive rounds
 </phase2>
 
 <phase3>
@@ -431,68 +389,14 @@ Revise before proceeding to Phase 6.
 
 The synthesis must be validated by the original monks. This is how Hegelian dialectics works: each position must recognize itself as preserved-but-elevated.
 
-**Critical ABS insight:** The monks don't *stop believing* after the synthesis. A defeated monk has dropped its belief load. A properly elevated monk *believes more* — it sees its original position as a partial truth within a larger truth.
+**Read `references/validation-prompts.md` for the full validation prompt templates and auditor orchestration.** Also read `references/auditor-prompt.md` for the hostile auditor prompt (required — Phase 6 cannot complete without it).
 
-### Monk Validation
-
-Send a condensed summary of the synthesis to each monk. Spawn **both validation agents in parallel** (persona persistence is unreliable; include a summary of each monk's original argument):
-
-```
-Agent tool call 1 (parallel):
-  description: "Monk A validates synthesis"
-  subagent_type: "general-purpose"
-  prompt: [VALIDATION PROMPT below, with Monk A's argument summary]
-  run_in_background: true
-
-Agent tool call 2 (parallel):
-  description: "Monk B validates synthesis"
-  subagent_type: "general-purpose"
-  prompt: [VALIDATION PROMPT below, with Monk B's argument summary]
-  run_in_background: true
-```
-
-**Validation Prompt:**
-
-```
-You argued passionately for [POSITION]. Here is a summary of your argument:
-[CONDENSED SUMMARY OF THIS AGENT'S ESSAY]
-
-A dialectician has proposed a synthesis. Here is the structural analysis:
-[CONDENSED SUMMARY OF PHASE 4 — key moves only]
-
-Here is the proposed synthesis:
-[CONDENSED SUMMARY OF PHASE 5]
-
-Evaluate honestly from your committed position:
-
-1. Does this synthesis PRESERVE your core insight?
-2. Does it reveal a genuine limitation you can now see?
-3. Do you feel ELEVATED or DEFEATED? Be honest.
-4. What's wrong with this synthesis?
-5. DEFEASIBILITY: What single piece of evidence would force you to abandon
-   even your ELEVATED position?
-
-Do NOT be agreeable. If the synthesis is just compromise dressed up, call it out.
-```
-
-### Hostile Auditor
-
-After monk validation, spawn a hostile auditor — a separate agent whose sole mandate is to find what's wrong. **Use the prompt template from `references/auditor-prompt.md`** (this file is required — do not skip it).
-
-```
-Agent tool call:
-  description: "Hostile auditor attacks synthesis"
-  subagent_type: "general-purpose"
-  model: "opus"  # Use strongest available
-  prompt: [Auditor prompt from references/auditor-prompt.md, with monks' essays + synthesis inserted]
-```
-
-**Critical:** Give the auditor ONLY the monks' essays and the synthesis. Do NOT give it your Phase 4 analysis — it should attack from fresh eyes. DO include 2-3 sentences of domain context.
-
-**When to use the auditor:**
-- **Always in Round 2+.**
-- **Optional in Round 1** — first-round synthesis is calibration and will be superseded.
-- **Always when the synthesis feels too easy** or like it's splitting the difference.
+Key principles (always apply):
+- Spawn both monk validation agents **in parallel** with `run_in_background: true`
+- Use fresh agents with argument summaries — persona persistence is unreliable
+- A properly elevated monk *believes more*, not less — it sees its original position as partial truth within a larger truth
+- Give the hostile auditor ONLY monks' essays + synthesis — no Phase 4 analysis
+- Auditor always in Round 2+, optional in Round 1
 
 ### Interpreting Results
 
@@ -561,50 +465,13 @@ Stop when:
 When stopping, present the **final dialectic queue** — explored, open, and deferred contradictions.
 </phase7>
 
-## Domain Adaptation
+## Domain Adaptation & Output Format
 
-| Domain Type | What "Truth" Means | Good Synthesis Looks Like | Grounding Mode |
-|---|---|---|---|
-| **Empirical** (engineering, science) | What works | Testable criteria, architectural patterns | External research |
-| **Normative** (ethics, politics) | What's defensible | Tension map with navigation strategies | Mixed |
-| **Personal** (life decisions, career) | What aligns with priorities | Values clarification | Deep interview |
-| **Creative** (writing, design) | What's interesting | Unexpected recombinations | Mixed |
-| **Risk Analysis** | Actual risk structure | Decision framework | External research |
+**Read `references/domain-adaptation.md`** for the full domain type table, domain-specific failure modes, and output format specification.
 
-**Domain-specific failure modes:**
-- **Engineering:** False equivalence — sometimes one approach is just better.
-- **Personal:** Therapy-larping. Also: generic monks. Ground in the user's actual situation.
-- **Politics:** Both-sidesism. Let synthesis reflect actual evidence.
-- **Creative:** Over-rationalizing. Sometimes the right choice is what feels right.
-- **Normative:** Ignoring authority structures. Ask: "Who decides?"
+Quick reference — grounding mode by domain:
+- **Empirical/Risk:** external research
+- **Personal:** deep interview (the interview IS the research)
+- **Normative/Creative:** mixed
 
-See `references/worked-examples.md` for concrete examples of prompt craft across domains.
-
-## Output Format
-
-The final deliverable:
-
-1. **The Dialectical Trace** — the full journey:
-   - Both monks' arguments
-   - Structural analysis (determinate negation)
-   - The hidden question
-   - The sublation with validation
-   - New contradictions identified
-
-2. **The Model Update:**
-   - "Before: [old assumption]"
-   - "After: [new understanding]"
-   - "Because: [what the contradiction revealed]"
-
-3. **Actionable Output** (domain-dependent):
-   - Engineering: decision criteria, architectural patterns
-   - Strategy: framework + sequencing (what first, what next)
-   - Personal: clarity about what you actually value
-   - Creative: new possibilities neither side saw
-
-4. **The Dialectic Queue** — map of the intellectual territory:
-   - Explored contradictions (with links to traces)
-   - Open/queued contradictions
-   - Deferred contradictions and why
-
-All files in `dialectics/[topic-name]/`. The queue file serves as both artifact and starting point for future sessions.
+The final deliverable includes: dialectical trace, model update ("Before/After/Because"), actionable output (domain-dependent), and the dialectic queue. All files in `dialectics/[topic-name]/`.

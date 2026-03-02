@@ -64,12 +64,15 @@ intermonk/
 ├── .claude-plugin/plugin.json
 ├── skills/
 │   └── dialectic/
-│       ├── SKILL.md                  # 7-phase orchestrator (~600 lines)
+│       ├── SKILL.md                  # 7-phase orchestrator (~475 lines)
 │       └── references/
+│           ├── auditor-prompt.md     # REQUIRED — Phase 6 hostile auditor
 │           ├── belief-burdens.md     # Phase 1c' — belief-burden typology
+│           ├── domain-adaptation.md  # Domain types, failure modes, output format
+│           ├── monk-prompt-template.md # Phase 2 — 7-section prompt template
 │           ├── theory.md             # Optional — theoretical foundations
-│           ├── worked-examples.md    # Optional — prompt craft examples
-│           └── auditor-prompt.md     # REQUIRED — Phase 6 hostile auditor
+│           ├── validation-prompts.md # Phase 6 — monk validation + auditor orchestration
+│           └── worked-examples.md    # Optional — prompt craft examples
 ├── README.md, CLAUDE.md, AGENTS.md, PHILOSOPHY.md, LICENSE
 ├── scripts/bump-version.sh
 └── tests/structural/
