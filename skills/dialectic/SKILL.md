@@ -1,6 +1,6 @@
 ---
 name: dialectic
-description: "Hegelian dialectic reasoning — Electric Monk subagents for structured contradiction analysis and synthesis. Use when the user wants to stress-test an idea, resolve a genuine tension, build a deeper mental model, or make a high-stakes decision where the tradeoffs are unclear. Works across any domain — technical architecture, product strategy, philosophy, personal decisions, risk analysis, policy, creative direction."
+description: "Hegelian dialectic reasoning — Electric Monk subagents for structured contradiction analysis and synthesis. Use when you want to stress-test an idea, resolve a genuine tension, build a deeper mental model, or make a high-stakes decision with unclear tradeoffs."
 ---
 <!-- compact: SKILL-compact.md -->
 
