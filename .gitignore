@@ -21,3 +21,6 @@ node_modules/
 .idea/
 .vscode/
 *.sw?
+
+# Machine-local interspect telemetry (SQLite); git-autosync does 'git add -A'
+.clavain/interspect/
