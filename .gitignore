@@ -13,6 +13,7 @@ node_modules/
 .clavain/**/*.db-shm
 .clavain/**/*.db-wal
 .clavain/intercore.db*
+.clavain/**/*.db
 
 # OS
 .DS_Store
@@ -21,6 +22,3 @@ node_modules/
 .idea/
 .vscode/
 *.sw?
-
-# Machine-local interspect telemetry (SQLite); git-autosync does 'git add -A'
-.clavain/interspect/
